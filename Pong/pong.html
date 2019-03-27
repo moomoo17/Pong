@@ -1,0 +1,109 @@
+<html><html>
+ <head>
+  <title> PONG </title> 
+   <script src="https://simplycodingcourses.com/files/simplyjs/simply.js"></script> 
+   <script> 
+	
+	function run(){
+	//open the canvas
+	sjs.open("target", 555, 550);
+	
+	///opening splash scree/ loading screen
+	var welcome_txt = new sjs.Text("Hello and welcome to this game");
+	welcome_txt.center().offset(0, -50)
+	
+	//set up bobby all the things
+	var bobbyTheBall = new sjs.Image("Images/planet.png")
+	bobbyTheBall.type = "ball";
+	bobbyTheBall.friction = 0;
+	bobbyTheBall.setSize(50, 50);
+	console.log(bobbyTheBall.getWidth());
+	
+	var patriciaThePaddle = new sjs.Image("Images/pink.png");
+	patriciaThePaddle.type = "paddle";
+	patriciaThePaddle.friction = .4;
+	patriciaThePaddle.setSize(150, 18);
+	
+	var patriciaThePaddle2 = new sjs.Image("Images/pink.png");
+	patriciaThePaddle2.type = "paddle";
+	patriciaThePaddle2.friction = .4;
+	patriciaThePaddle2.setSize(18, 150);
+	
+	var patriciaThePaddle3 = new sjs.Image("Images/pink.png");
+	patriciaThePaddle3.type = "paddle";
+	patriciaThePaddle3.friction = .4;
+	patriciaThePaddle3.setSize(18, 150);
+	
+	var patriciaThePaddle4 = new sjs.Image("Images/pink.png");
+	patriciaThePaddle4.type = "paddle";
+	patriciaThePaddle4.friction = .4;
+	patriciaThePaddle4.setSize(150, 18);
+	
+	var score = 0;
+	var score_txt = new sjs.Text("Score: ",+score, 21, "orange");
+	score_txt.center();
+	
+	var sound = new Audio('Music/signal.mp3');
+	
+	//move him around
+	bobbyTheBall.center();
+	patriciaThePaddle.centerH()
+	patriciaThePaddle2.centerV().left();
+	patriciaThePaddle3.centerV().right();
+	patriciaThePaddle4.centerH().bottom();
+	
+	bobbyTheBall.pushUp(10);
+	bobbyTheBall.pushRight(10);
+	console.log(bobbyTheBall.getY());
+	
+	bobbyTheBall.bounce();
+
+	// move the paddles
+	sjs.keyDown(LEFT_KEY, function(){
+		patriciaThePaddle.pushleft()
+		});
+	sjs.keyDown(RIGHT_KEY, function(){
+		patriciaThePaddle.pushright()
+		});
+	sjs.keyDown(UP_KEY, function(){
+		patriciaThePaddle2.pushup()
+		});
+	sjs.keyDown(DOWN_KEY, function(){
+		patriciaThePaddle2.pushdown()
+		});
+
+		
+	patriciaThePaddle.followx(sjs.mouse);
+	patriciaThePaddle4.followx(sjs.mouse);
+		
+	//hit ditection, where the game happens
+	sjs.onHit("ball", "paddle", function(ball, paddle){
+		sjs.bounceOff(ball, paddle);
+		score++;
+		score_txt.setText("A Score: "+score);
+		//add sound
+		sound.play()});
+	sjs.onHit ("ball", "edge", function(ball, edge){
+		sjs.bounceOff(ball,edge);
+		score--;
+		score_txt.setText("A Score: "+score);
+		if(score <= 0) {
+			window.location = "index.html";
+		}});
+	
+	sjs.onHit("ball", ["top_screen", "bottom_screen"], function(){
+	window.location = "index.html";
+	});
+	
+
+	
+	}//end run function
+
+
+ </script> 
+ </head> 
+<body onload ="run()"> 
+   <h3> Pong my man </h3> 
+  <div id="target" style="margin:auto;background:purple;"></div> 
+ </body> 
+</html> 
